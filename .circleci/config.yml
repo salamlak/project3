@@ -44,7 +44,7 @@ commands:
           command: |
             
             aws cloudformation delete-stack --stack-name uda-people-frontend-<< parameters.Workflow_ID >>
-            
+
             aws s3 rm s3://uda-people-<<parameters.Workflow_ID>> --recursive
             aws cloudformation delete-stack --stack-name uda-people-backend-<< parameters.Workflow_ID >>
             
@@ -216,10 +216,11 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/python:3.10
     steps:
       - checkout
       - install_ansible
+      - install_awscli
       - add_ssh_keys:
           fingerprints: ["d7:fe:9a:a6:17:ca:98:70:73:5f:ae:b9:dd:cf:9d:cc"]
       - attach_workspace:
