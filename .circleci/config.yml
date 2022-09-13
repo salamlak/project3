@@ -44,6 +44,7 @@ commands:
           command: |
             
             aws cloudformation delete-stack --stack-name uda-people-frontend-<< parameters.Workflow_ID >>
+            
             aws s3 rm s3://uda-people-<<parameters.Workflow_ID>> --recursive
             aws cloudformation delete-stack --stack-name uda-people-backend-<< parameters.Workflow_ID >>
             
