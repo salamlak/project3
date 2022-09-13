@@ -9,9 +9,9 @@ commands:
           channel: cicd-pipeline
           template: basic_fail_1
   install_awscli: 
-      description: Install AWS CLI v2 
-      steps: 
-        - run:
+    description: Install AWS CLI v2 
+    steps: 
+      - run:
             name: Install AWS CLI v2
             command: |
               curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -19,15 +19,15 @@ commands:
               sudo ./aws/install
 
   install_ansible:
-      description: Install Ansible
-      steps:
-        - run:
+    description: Install Ansible
+    steps:
+      - run:
             name: Install Ansible
             command: |
               sudo apt update
-              sudo apt install software-properties-common
-              sudo add-apt-repository --yes --ppa:ansible/ansible
-              sudo apt install ansible 
+              sudo apt install software-properties-common -y
+              sudo add-apt-repository --yes --update ppa:ansible/ansible
+              sudo apt install ansible -y
             
 
 
@@ -167,7 +167,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - checkout:
+      - checkout
       - install_awscli
       - run:
           name: Ensure back-end infrastructure exists
@@ -175,8 +175,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=uda-people \
-               --stack-name "uda-people-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
+              --stack-name "uda-people-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
                
       - run:
           name: Ensure front-end infrastructure exist
